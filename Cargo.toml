@@ -1,7 +1,7 @@
 [workspace]
 resolver = "2"
-members = ["crates/ace"]
+members = ["crates/ace", "crmf", "crates/engine"]
 # Root package removed for Phase 2 workspace
 # No external dev dependencies; Kani verification is conditionally compiled.
 [patch.crates-io]
-proc-macro-error2 = { path = "/home/citizen/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/proc-macro-error2-2.0.1" }
+proc-macro-error2 = { path = "./patched-crates/proc-macro-error2" }
