@@ -1,0 +1,30 @@
+name: Apex Integrity
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+          override: true
+      - name: Install Kani (cargo subcommand)
+        run: |
+          curl -L https://raw.githubusercontent.com/model-checking/kani/master/scripts/install-kani.sh | bash
+      - name: Validate Zero‑sorry Lean files
+        run: bash scripts/validate_zero_drift.sh
+      - name: Build Lean core
+        working-directory: lean
+        run: lake build
+      - name: Run Kani model checking
+        run: cargo kani
+      - name: Run Rust tests
+        run: cargo test
